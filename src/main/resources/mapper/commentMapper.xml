@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fastcampus.MyWeb1.Dao.CommentMapper">
+    <sql id="selectFromComment">
+        SELECT cno, bno, pcno, comment, commenter, reg_date, up_date
+        FROM comment
+    </sql>
+
+    <select id="count" parameterType="int" resultType="int">
+        SELECT count(*)
+        FROM comment
+        WHERE bno = #{bno};
+    </select>
+
+    <select id="selectAll" parameterType="map" resultType="CommentDto">
+        SELECT cno, bno, ifnull(pcno, cno) as pcno, comment, commenter, reg_date, up_date
+        FROM comment
+        WHERE bno = #{bno}
+        ORDER BY pcno ASC, cno ASC
+            LIMIT #{offset} , #{pageSize};
+    </select>
+
+    <select id="select" parameterType="int" resultType="CommentDto">
+        <include refid="selectFromComment"/>
+        WHERE cno = #{cno}
+    </select>
+
+    <insert id="insert" parameterType="CommentDto">
+        INSERT INTO comment
+            (bno, pcno, comment, commenter, reg_date, up_date)
+        VALUES
+            (#{bno}, #{pcno}, #{comment}, #{commenter}, now(), now())
+    </insert>
+
+    <update id="update" parameterType="CommentDto">
+        UPDATE comment
+        SET comment = #{comment}, up_date = now()
+        WHERE cno = #{cno} and commenter = #{commenter};
+    </update>
+
+    <delete id="delete" parameterType="CommentDto">
+        DELETE FROM comment
+        WHERE cno = #{cno} and commenter = #{commenter}
+    </delete>
+
+    <delete id="deleteAll" parameterType="int">
+        DELETE FROM comment
+        WHERE bno = #{bno}
+    </delete>
+
+    <select id="selectCommentPage" parameterType="int">
+        <include refid="selectFromComment"/>
+        ORDER BY reg_date ASC, cno ASC
+        LIMIT #{offset} , #{pageSize};
+    </select>
+</mapper>
