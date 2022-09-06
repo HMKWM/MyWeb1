@@ -1,4 +1,4 @@
-package com.fastcampus.MyWeb1.Domain;
+package com.fastcampus.MyWeb1.domain;
 
 import org.springframework.stereotype.Component;
 

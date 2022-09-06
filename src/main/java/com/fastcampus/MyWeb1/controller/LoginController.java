@@ -1,8 +1,7 @@
-package com.fastcampus.MyWeb1.Controller;
+package com.fastcampus.MyWeb1.controller;
 
-import com.fastcampus.MyWeb1.Domain.UserDto;
-import com.fastcampus.MyWeb1.Service.LoginService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fastcampus.MyWeb1.domain.UserDto;
+import com.fastcampus.MyWeb1.service.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +15,12 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
-    @Autowired
+    final
     LoginService loginService;
+
+    public LoginController(LoginService loginService) {
+        this.loginService = loginService;
+    }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -28,7 +31,7 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String loginPage(String toURL, HttpServletRequest request,HttpSession session, Model m){
+    public String loginPage(String toURL, HttpServletRequest request, HttpSession session, Model m){
         if(session.getAttribute("id")!=null){
             return "redirect:/";
         }

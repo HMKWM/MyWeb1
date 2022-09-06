@@ -1,9 +1,9 @@
-package com.fastcampus.MyWeb1.Controller;
+package com.fastcampus.MyWeb1.service;
 
-import com.fastcampus.MyWeb1.Dao.BoardDao;
-import com.fastcampus.MyWeb1.Dao.CommentDao;
-import com.fastcampus.MyWeb1.Domain.CommentDto;
-import com.fastcampus.MyWeb1.Domain.SearchCondition;
+import com.fastcampus.MyWeb1.dao.BoardDao;
+import com.fastcampus.MyWeb1.dao.CommentDao;
+import com.fastcampus.MyWeb1.domain.CommentDto;
+import com.fastcampus.MyWeb1.domain.SearchCondition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

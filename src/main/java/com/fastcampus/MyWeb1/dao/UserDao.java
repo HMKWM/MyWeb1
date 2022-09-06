@@ -1,17 +1,20 @@
-package com.fastcampus.MyWeb1.Dao;
+package com.fastcampus.MyWeb1.dao;
 
-import com.fastcampus.MyWeb1.Domain.UserDto;
+import com.fastcampus.MyWeb1.domain.UserDto;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDao {
 
-    @Autowired
+    final
     SqlSession session;
 
-    private static String namespace = "com.fastcampus.MyWeb1.Dao.userMapper.";
+    private static String namespace = "com.fastcampus.MyWeb1.dao.userMapper.";
+
+    public UserDao(SqlSession session) {
+        this.session = session;
+    }
 
     public UserDto select(String id) throws Exception{
         return session.selectOne(namespace+"select", id);

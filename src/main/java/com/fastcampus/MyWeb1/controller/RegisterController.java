@@ -1,9 +1,8 @@
-package com.fastcampus.MyWeb1.Controller;
+package com.fastcampus.MyWeb1.controller;
 
-import com.fastcampus.MyWeb1.Domain.UserDto;
-import com.fastcampus.MyWeb1.Service.RegisterService;
-import com.fastcampus.MyWeb1.Validator.UserDtoValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fastcampus.MyWeb1.domain.UserDto;
+import com.fastcampus.MyWeb1.service.RegisterService;
+import com.fastcampus.MyWeb1.validator.UserDtoValidator;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +18,12 @@ import java.util.Date;
 
 @Controller
 public class RegisterController {
-    @Autowired
+    final
     RegisterService registerService;
+
+    public RegisterController(RegisterService registerService) {
+        this.registerService = registerService;
+    }
 
     @InitBinder
     public void toDate(WebDataBinder binder){

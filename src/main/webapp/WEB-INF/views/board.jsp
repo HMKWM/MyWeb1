@@ -268,7 +268,7 @@
     }
 
     let newMode = function(){
-      let form = document.querySelector("#form");
+      // let form = document.querySelector("#form");
       let sendBtn = document.querySelector("#board-send");
 
       writeMode();
@@ -276,14 +276,11 @@
       document.querySelector("#writer> input").setAttribute("value",'${id}');
       // document.querySelector("textarea").hidden=true;
 
-      sendBtn.addEventListener("click",function(){
-        form.setAttribute("action", "<c:url value='/board/write'/>");
-        form.submit();
-      })
+      sendBtn.addEventListener("click",write);
+
     }
 
     let readMode = function(){
-      let form = document.querySelector("#form");
       let modBtn = document.querySelector("#board-modify");
       let writeBtn = document.querySelector("#board-write");
       let removeBtn = document.querySelector("#board-remove");
@@ -299,10 +296,7 @@
         location.href="<c:url value='/board/write${sc.queryString}'/>";
       })
 
-      removeBtn.addEventListener("click",function(){
-        form.setAttribute("action", "<c:url value='/board/remove${sc.queryString}&bno=${boardDto.bno}'/>");
-        form.submit();
-      })
+      removeBtn.addEventListener("click",()=> ajaxData('DELETE','<c:url value='/board/${boardDto.bno}'/>',{},"삭제"))
 
       modBtn.addEventListener("click",function(){
         location.href="<c:url value='/board/${bno}${sc.queryString}&mode=mod'/>";
@@ -331,9 +325,11 @@
       document.querySelector("#board-send").hidden=false;
       document.querySelector("#board-cancel").hidden=false;
 
-      sendBtn.addEventListener("click",function(){
-        form.setAttribute("action", "<c:url value='/board/modify'/>");
-        form.submit();
+      sendBtn.addEventListener("click",()=>{
+        let title = document.querySelector("#title > input").value;
+        let writer = document.querySelector("#writer > input").value;
+        let content = document.querySelector("#content > textarea").value;
+        ajaxData('PUT','<c:url value='/board/${boardDto.bno}'/>',{title:title, content:content, writer:writer},"수정")
       })
 
       cancelBtn.addEventListener("click",function(){
@@ -486,6 +482,15 @@
       xhr.onerror = function(){
         alert("write error");
       }
+    }
+
+    function write(){
+      let title = document.querySelector("#title > input").value;
+      let writer = document.querySelector("#writer > input").value;
+      let content = document.querySelector("#content > textarea").value;
+      let data = {title : title, writer: writer, content : content }
+      let url = '<c:url value="/board/write"/>'
+      ajaxData('POST',url, data, "작성");
     }
 
     function commentWrite(){
@@ -646,32 +651,35 @@
         })
       }
 
-
-      function remove(e){
-        let xhr = new XMLHttpRequest();
-        xhr.open('DELETE', 'http://localhost/MyWeb1/comments/'+cno);
-
+      async function remove(e){
+        let cno = e.target.getAttribute("data-cno");
         let data = {
           bno:${boardDto.bno!=null ? boardDto.bno:0}
         };
 
-        xhr.setRequestHeader("content-type", "application/json");
-
-        xhr.send(JSON.stringify(data));
-
-        xhr.onload = function(){
-          if (xhr.status == 200) {
-            alert("삭제에 성공했습니다.")
-            if(Math.ceil((count-1)/cmtPageSize)!=totalPage)
-              showListPaging(cmtPage-1)
-            else
-              showListPaging(cmtPage);
-          } else {
-            alert("삭제에 실패했습니다.")
-          }
-        }
+        fetch('http://localhost/MyWeb1/comments/'+cno,{
+          method: 'DELETE',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(data),
+        })
+                .then(res => {
+                  if(res.status==200){
+                    alert("삭제에 성공했습니다.");
+                    if(Math.ceil((count-1)/cmtPageSize)!=totalPage)
+                      showListPaging(cmtPage-1);
+                    else
+                      showListPaging(cmtPage);
+                  } else{
+                    alert("삭제에 실패했습니다.");
+                  }
+                })
+                .catch((error)=>{
+                  alert("에 실패하셨습니다.");
+                })
       }
     }
+
+
 
     function dateFormat(date) {
       let now = new Date()
@@ -702,6 +710,29 @@
       // return reg_date.getFullYear() + '.' + month + '.' + day + ' ' + hour + ':' + minute + ':' + second;
       return reg_date.getFullYear() + '.' + month + '.' + day;
     }
+
+    async function ajaxData(method ='', url = '', data = [], message=''){
+      fetch(url , {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+              .then(res => res.json())
+              .then(res => {
+                if(res.result =="OK"){
+                  alert(message+"에 성공하셨습니다.");
+                  listBtn();
+                }
+                else
+                  alert(message+"에 실패하셨습니다.\n원인 : " + res.result);
+              })
+              .catch((error)=>{
+                alert(message+"에 실패하셨습니다.");
+              })
+    }
+
 
   </script>
 </body>

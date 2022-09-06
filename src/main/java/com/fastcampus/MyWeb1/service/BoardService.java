@@ -1,17 +1,19 @@
-package com.fastcampus.MyWeb1.Service;
+package com.fastcampus.MyWeb1.service;
 
-import com.fastcampus.MyWeb1.Dao.BoardDao;
-import com.fastcampus.MyWeb1.Domain.BoardDto;
-import com.fastcampus.MyWeb1.Domain.SearchCondition;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fastcampus.MyWeb1.dao.BoardDao;
+import com.fastcampus.MyWeb1.domain.BoardDto;
+import com.fastcampus.MyWeb1.domain.SearchCondition;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class BoardService {
-    @Autowired
-    BoardDao boardDao;
+    final BoardDao boardDao;
+
+    public BoardService(BoardDao boardDao) {
+        this.boardDao = boardDao;
+    }
 
     // 게시글 CRUD
     // 권한이 필요한거 : UD
@@ -27,6 +29,9 @@ public class BoardService {
     }
 
     public int modify(BoardDto boardDto) throws Exception{
+        if(boardDao.select(boardDto.getBno())==null){
+            throw new Exception();
+        }
         return boardDao.update(boardDto);
     }
 

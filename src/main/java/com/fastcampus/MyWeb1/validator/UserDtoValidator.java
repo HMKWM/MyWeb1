@@ -1,6 +1,6 @@
-package com.fastcampus.MyWeb1.Validator;
+package com.fastcampus.MyWeb1.validator;
 
-import com.fastcampus.MyWeb1.Domain.UserDto;
+import com.fastcampus.MyWeb1.domain.UserDto;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

@@ -1,9 +1,8 @@
-package com.fastcampus.MyWeb1.Dao;
+package com.fastcampus.MyWeb1.dao;
 
-import com.fastcampus.MyWeb1.Domain.BoardDto;
-import com.fastcampus.MyWeb1.Domain.SearchCondition;
+import com.fastcampus.MyWeb1.domain.BoardDto;
+import com.fastcampus.MyWeb1.domain.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -12,10 +11,14 @@ import java.util.Map;
 
 @Repository
 public class BoardDao {
-    @Autowired
+    final
     SqlSession session;
 
-    private static String namespace = "com.fastcampus.MyWeb1.Dao.BoardMapper.";
+    private static String namespace = "com.fastcampus.MyWeb1.dao.BoardMapper.";
+
+    public BoardDao(SqlSession session) {
+        this.session = session;
+    }
 
     // CRUD
     public int insert(BoardDto boardDto) throws Exception{

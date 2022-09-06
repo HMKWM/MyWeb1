@@ -1,9 +1,9 @@
-package com.fastcampus.MyWeb1.Controller;
+package com.fastcampus.MyWeb1.controller;
 
-import com.fastcampus.MyWeb1.Domain.CommentDto;
-import com.fastcampus.MyWeb1.Domain.PageHandler;
-import com.fastcampus.MyWeb1.Domain.SearchCondition;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fastcampus.MyWeb1.domain.CommentDto;
+import com.fastcampus.MyWeb1.domain.PageHandler;
+import com.fastcampus.MyWeb1.domain.SearchCondition;
+import com.fastcampus.MyWeb1.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,12 @@ import java.util.List;
 public class CommentController {
     private Integer pageSize = 20;
 
-    @Autowired
+    final
     CommentService commentService;
+
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @GetMapping("/{commentPage}")
     public ResponseEntity<List<CommentDto>> list(@PathVariable Integer commentPage, Integer bno){

@@ -1,14 +1,17 @@
-package com.fastcampus.MyWeb1.Service;
+package com.fastcampus.MyWeb1.service;
 
-import com.fastcampus.MyWeb1.Dao.UserDao;
-import com.fastcampus.MyWeb1.Domain.UserDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fastcampus.MyWeb1.dao.UserDao;
+import com.fastcampus.MyWeb1.domain.UserDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RegisterService {
-    @Autowired
+    final
     UserDao userDao;
+
+    public RegisterService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public boolean checkId(String id) throws Exception {
         return userDao.select(id) == null; // 없으면 true 있으면 false

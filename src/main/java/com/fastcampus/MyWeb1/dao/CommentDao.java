@@ -1,9 +1,8 @@
-package com.fastcampus.MyWeb1.Dao;
+package com.fastcampus.MyWeb1.dao;
 
-import com.fastcampus.MyWeb1.Domain.CommentDto;
-import com.fastcampus.MyWeb1.Domain.SearchCondition;
+import com.fastcampus.MyWeb1.domain.CommentDto;
+import com.fastcampus.MyWeb1.domain.SearchCondition;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -12,11 +11,14 @@ import java.util.Map;
 
 @Repository
 public class CommentDao {
-    @Autowired
-    private SqlSession session;
-    private static String namespace = "com.fastcampus.MyWeb1.Dao.CommentMapper.";
+    private final SqlSession session;
+    private static String namespace = "com.fastcampus.MyWeb1.dao.CommentMapper.";
 
-    
+    public CommentDao(SqlSession session) {
+        this.session = session;
+    }
+
+
     public int count(int bno) throws Exception{
         return session.selectOne(namespace+"count", bno);
     }

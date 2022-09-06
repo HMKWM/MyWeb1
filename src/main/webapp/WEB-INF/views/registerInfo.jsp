@@ -72,7 +72,7 @@
 <body>
 <c:url value="/register" var="sendURI"/>
 
-<%--@elvariable id="userDto" type="com.fastcampus.MyWeb1.Domain.UserDto"--%>
+<%--@elvariable id="userDto" type="com.fastcampus.MyWeb1.domain.UserDto"--%>
 <form>
   <div class="title">가입 정보</div>
   <div id="id">
